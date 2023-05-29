@@ -1,5 +1,6 @@
 const { Card } = require('../models/card');
 const { handleError } = require('../utils/handleError');
+
 async function deleteLike(req, res) {
   try {
     const userId = req.user._id;
@@ -20,4 +21,5 @@ async function deleteLike(req, res) {
     handleError(err, req, res);
   }
 }
+
 module.exports = { deleteLike };

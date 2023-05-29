@@ -1,13 +1,11 @@
 const { Card } = require('../models/card');
 const { handleError } = require('../utils/handleError');
-async function putLike(req, res) {
+
+async function deleteCard(req, res) {
   try {
-    const userId = req.user._id;
-    const card = await Card.findByIdAndUpdate(
-      req.params.cardId,
-      { $addToSet: { likes: userId } }, // добавить _id в массив, если его там нет
-      { new: true },
-    );
+    const { cardId } = req.params;
+
+    const card = await Card.findByIdAndRemove(cardId);
 
     if (!card) {
       const error = new Error('Карточка не найдена');
@@ -20,4 +18,5 @@ async function putLike(req, res) {
     handleError(err, req, res);
   }
 }
-module.exports = { putLike };
+
+module.exports = { deleteCard };

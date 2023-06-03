@@ -3,14 +3,14 @@ const { handleError } = require('../utils/handleError');
 const { users } = require('./users');
 const { cards } = require('./cards');
 
-const routes = express.Router();
+const router = express.Router();
 
-routes.use('/users', users);
-routes.use('/cards', cards);
-routes.all('*', (req, res) => {
+router.use('/users', users);
+router.use('/cards', cards);
+router.all('*', (req, res) => {
   const err = new Error('Неверный адрес запроса');
   err.name = 'NotFoundError';
   handleError(err, req, res);
 });
 
-module.exports = { routes };
+module.exports = router;

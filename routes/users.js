@@ -1,16 +1,14 @@
 const express = require('express');
-const { getAllUsers } = require('../controllers/getAllUsers');
-const { getUser } = require('../controllers/getUser');
-const { createUser } = require('../controllers/createUser');
-const { updateUser } = require('../controllers/updateUser');
-const { updateAvatar } = require('../controllers/updateAvatar');
+const {
+  getAllUsers, getUser, createUser, updateUser, updateAvatar,
+} = require('../controllers/users');
 
-const users = express.Router();
+const router = express.Router();
 
-users.get('/', getAllUsers);
-users.get('/:userId', getUser);
-users.post('/', express.json(), createUser);
-users.patch('/me', express.json(), updateUser);
-users.patch('/me/avatar', express.json(), updateAvatar);
+router.get('/users', getAllUsers);
+router.get('/users/:userId', getUser);
+router.post('/users', createUser);
+router.patch('/users/me', updateUser);
+router.patch('/users/me/avatar', updateAvatar);
 
-module.exports = { users };
+module.exports = router;

@@ -31,7 +31,7 @@ async function createUser(req, res) {
   try {
     const { name, about, avatar } = req.body;
     const user = await User.create({ name, about, avatar });
-    res.send(user);
+    res.status(201).send(user);
   } catch (err) {
     handleError(err, req, res);
   }
@@ -59,7 +59,7 @@ async function updateAvatar(req, res) {
     const user = await User.findByIdAndUpdate(
       userId,
       { avatar },
-      { new: true },
+      { new: true, runValidators: true },
     );
     res.send(user);
   } catch (err) {

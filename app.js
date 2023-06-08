@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
+const { handleError } = require('./middlewares/handleError');
 
 const router = require('./routes/index');
 
@@ -15,6 +16,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(helmet());
 app.use(express.json());
 app.use(router);
+
+app.use(handleError);
 
 app.listen(PORT, () => {
   console.log(`App started on port ${PORT}`);

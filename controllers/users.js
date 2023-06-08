@@ -2,14 +2,23 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const handleError = require('../utils/handleError');
 const NotFoundError = require('../errors/NotFoundError');
+const ConflictError = require('../errors/ConflictError');
 
 const SALT_LENGTH = 10;
 
-async function createUser(req, res) {
+async function createUser(req, res, next) {
   try {
     const { email, password, name, about, avatar } = req.body;
     const passwordHash = await bcrypt.hash(password, SALT_LENGTH);
-    let user = await User.create({
+
+    let user = User.findOne({ email });
+
+    if (user) {
+      throw new ConflictError('Пользователь с таким email уже существует');
+    }
+
+
+    user = await User.create({
       email,
       password: passwordHash,
       name,
@@ -20,7 +29,7 @@ async function createUser(req, res) {
     delete user.password
     res.status(201).send(user);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 

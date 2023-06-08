@@ -5,7 +5,7 @@ const {
   getAllUsers, getUser, getCurrentUser, updateUser, updateAvatar,
 } = require('../controllers/users');
 
-const router = express.Router();
+const users = express.Router();
 
 users.get('/', getAllUsers);
 users.get('/me', getCurrentUser);

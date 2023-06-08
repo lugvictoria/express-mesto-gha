@@ -39,10 +39,8 @@ router.post(
   login,
 );
 
-router.all('*', auth);
-
-router.use(users);
-router.use(cards);
+router.use('/users', auth, users);
+router.use('/cards', auth, cards);
 router.all('*', (req, res, next) => {
   next(new NotFoundError('Неверный адрес запроса'));
 });

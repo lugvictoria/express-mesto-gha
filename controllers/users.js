@@ -1,7 +1,25 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const { handleError } = require('../utils/handleError');
+const handleError = require('../utils/handleError');
 
+const SALT_LENGTH = 10;
+
+async function createUser(req, res) {
+  try {
+    const { email, password, name, about, avatar } = req.body;
+    const passwordHash = await bcrypt.hash(password, SALT_LENGTH);
+    const user = await User.create({
+      email,
+      password: passwordHash,
+      name,
+      about,
+      avatar,
+    });
+    res.status(201).send(user);
+  } catch (err) {
+    handleError(err, req, res);
+  }
+}
 
 async function getAllUsers(req, res) {
   try {
@@ -29,20 +47,18 @@ async function getUser(req, res) {
   }
 }
 
-const SALT_LENGTH = 10;
-
-async function createUser(req, res) {
+async function getCurrentUser(req, res) {
   try {
-    const { email, password, name, about, avatar } = req.body;
-    const passwordHash = await bcrypt.hash(password, SALT_LENGTH);
-    const user = await User.create({
-      email,
-      password: passwordHash,
-      name,
-      about,
-      avatar,
-    });
-    res.status(201).send(user);
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      const error = new Error('Пользователь не найден');
+      error.name = 'NotFoundError';
+      throw error;
+    }
+
+    res.send(user);
   } catch (err) {
     handleError(err, req, res);
   }
@@ -79,5 +95,5 @@ async function updateAvatar(req, res) {
 }
 
 module.exports = {
-  getAllUsers, getUser, createUser, updateUser, updateAvatar,
+  getAllUsers, getUser, getCurrentUser, createUser, updateUser, updateAvatar,
 };

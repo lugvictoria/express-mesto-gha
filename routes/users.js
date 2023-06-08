@@ -40,4 +40,4 @@ users.patch(
   updateAvatar,
 );
 
-module.exports = router;
+module.exports = users;

@@ -4,7 +4,7 @@ const {
   getAllCards, createCard, deleteCard, putLike, deleteLike,
 } = require('../controllers/cards');
 
-const router = express.Router();
+const cards = express.Router();
 
 router.get('/cards', getAllCards);
 
@@ -19,8 +19,35 @@ cards.post(
   createCard,
 );
 
-router.delete('/cards/:cardId', deleteCard);
-router.put('/cards/:cardId/likes', putLike);
-router.delete('/cards/:cardId/likes', deleteLike);
+cards.delete(
+  '/:cardId',
+  celebrate({
+    params: Joi.object().keys({
+      cardId: Joi.string().alphanum().length(24),
+    }),
+  }),
+  deleteCard,
+);
 
-module.exports = router;
+cards.put(
+  '/:cardId/likes',
+  celebrate({
+    params: Joi.object().keys({
+      cardId: Joi.string().alphanum().length(24),
+    }),
+  }),
+  putLike,
+);
+
+cards.delete(
+  '/:cardId/likes',
+  celebrate({
+    params: Joi.object().keys({
+      cardId: Joi.string().alphanum().length(24),
+    }),
+  }),
+  deleteLike,
+);
+
+
+module.exports = cards;

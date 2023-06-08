@@ -1,7 +1,6 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
 
-const handleError = require('../utils/handleError');
 const users = require('./users');
 const createUser = require('./users');
 const cards = require('./cards');

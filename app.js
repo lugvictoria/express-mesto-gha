@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const { errors } = require('celebrate');
+
 const helmet = require('helmet');
 const { handleError } = require('./middlewares/handleError');
 
@@ -16,6 +18,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(helmet());
 app.use(express.json());
 app.use(router);
+
+app.use(errors()); // обработчик ошибок celebrate
 
 app.use(handleError);
 

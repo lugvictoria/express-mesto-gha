@@ -1,5 +1,7 @@
+const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const { handleError } = require('../utils/handleError');
+
 
 async function getAllUsers(req, res) {
   try {
@@ -27,13 +29,18 @@ async function getUser(req, res) {
   }
 }
 
+const SALT_LENGTH = 10;
+
 async function createUser(req, res) {
   try {
-    const {
-      email, password, name, about, avatar,
-    } = req.body;
+    const { email, password, name, about, avatar } = req.body;
+    const passwordHash = await bcrypt.hash(password, SALT_LENGTH);
     const user = await User.create({
-      email, password, name, about, avatar,
+      email,
+      password: passwordHash,
+      name,
+      about,
+      avatar,
     });
     res.status(201).send(user);
   } catch (err) {

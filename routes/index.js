@@ -9,8 +9,8 @@ const NotFoundError = require('../errors/NotFoundError');
 
 const router = express.Router();
 
-router.post('/signup', express.json(), createUser);
-router.post('/signin', express.json(), login);
+router.post('/signup', createUser);
+router.post('/signin', login);
 router.all('*', auth);
 
 router.use(users);

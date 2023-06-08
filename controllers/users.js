@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 const handleError = require('../utils/handleError');
+const NotFoundError = require('../errors/NotFoundError');
 
 const SALT_LENGTH = 10;
 
@@ -30,37 +31,33 @@ async function getAllUsers(req, res) {
   }
 }
 
-async function getUser(req, res) {
+async function getUser(req, res, next) {
   try {
     const { userId } = req.params;
     const user = await User.findById(userId);
 
     if (!user) {
-      const error = new Error('Пользователь не найден');
-      error.name = 'NotFoundError';
-      throw error;
+      throw new NotFoundError('Пользователь не найден');
     }
 
     res.send(user);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 
-async function getCurrentUser(req, res) {
+async function getCurrentUser(req, res, next) {
   try {
     const userId = req.user._id;
     const user = await User.findById(userId);
 
     if (!user) {
-      const error = new Error('Пользователь не найден');
-      error.name = 'NotFoundError';
-      throw error;
+      throw new NotFoundError('Пользователь не найден');
     }
 
     res.send(user);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 

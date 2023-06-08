@@ -5,6 +5,7 @@ const createUser = require('./users');
 const cards = require('./cards');
 const login = require('../controllers/login');
 const auth = require('../middlewares/auth');
+const NotFoundError = require('../errors/NotFoundError');
 
 const router = express.Router();
 
@@ -14,10 +15,8 @@ router.all('*', auth);
 
 router.use(users);
 router.use(cards);
-router.use((req, res) => {
-  const err = new Error('Неверный адрес запроса');
-  err.name = 'NotFoundError';
-  handleError(err, req, res);
+router.all('*', (req, res, next) => {
+  next(new NotFoundError('Неверный адрес запроса'));
 });
 
 module.exports = router;

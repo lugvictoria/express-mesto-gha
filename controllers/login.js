@@ -1,26 +1,22 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models/user');
-const { handleError } = require('../utils/handleError');
+const { UnauthorizedError } = require('../errors/UnauthorizedError');
 
-async function login(req, res) {
+async function login(req, res, next) {
   try {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-      const error = new Error('Неверные данные для входа');
-      error.name = 'UnauthorizedError';
-      throw error;
+      throw new UnauthorizedError('Неверные данные для входа');
     }
 
     const hasRightPassword = await bcrypt.compare(password, user.password);
 
     if (!hasRightPassword) {
-      const error = new Error('Неверные данные для входа');
-      error.name = 'UnauthorizedError';
-      throw error;
+      throw new UnauthorizedError('Неверные данные для входа');
     }
 
     const token = jwt.sign(
@@ -35,7 +31,7 @@ async function login(req, res) {
 
     res.send({ jwt: token });
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 

@@ -1,5 +1,8 @@
+const mongoose = require('mongoose');
 const Card = require('../models/card');
 const { handleError } = require('../utils/handleError');
+const NotFoundError = require('../errors/NotFoundError');
+const UnauthorizedError = require('../errors/UnauthorizedError');
 
 async function getAllCards(req, res) {
   try {
@@ -21,35 +24,35 @@ async function createCard(req, res) {
   }
 }
 
-async function deleteCard(req, res) {
+async function deleteCard(req, res, next) {
   try {
     const { cardId } = req.params;
 
-    const card = await Card.findById(cardId).populate('owner');
+    let card = mongoose.Types.ObjectId.isValid(cardId);
+
+    if (card) {
+      card = await Card.findById(cardId).populate('owner');
+    }
 
     if (!card) {
-      const error = new Error('Карточка не найдена');
-      error.name = 'NotFoundError';
-      throw error;
+      throw new NotFoundError('Карточка не найдена');
     }
-    
+
     const ownerId = card.owner.id;
     const userId = req.user._id;
 
     if (ownerId !== userId) {
-      const error = new Error('Удалить можно только свою карточку');
-      error.name = 'UnauthorizedError';
-      throw error;
+      throw new UnauthorizedError('Удалить можно только свою карточку');
     }
 
     await Card.findByIdAndRemove(cardId);
     res.send(card);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 
-async function putLike(req, res) {
+async function putLike(req, res, next) {
   try {
     const userId = req.user._id;
     const card = await Card.findByIdAndUpdate(
@@ -59,18 +62,16 @@ async function putLike(req, res) {
     );
 
     if (!card) {
-      const error = new Error('Карточка не найдена');
-      error.name = 'NotFoundError';
-      throw error;
+      throw new NotFoundError('Карточка не найдена');
     }
 
     res.send(card);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 
-async function deleteLike(req, res) {
+async function deleteLike(req, res, next) {
   try {
     const userId = req.user._id;
     const card = await Card.findByIdAndUpdate(
@@ -80,14 +81,12 @@ async function deleteLike(req, res) {
     );
 
     if (!card) {
-      const error = new Error('Карточка не найдена');
-      error.name = 'NotFoundError';
-      throw error;
+      throw new NotFoundError('Карточка не найдена');
     }
 
     res.send(card);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 

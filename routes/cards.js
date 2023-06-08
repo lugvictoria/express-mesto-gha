@@ -6,7 +6,7 @@ const {
 
 const cards = express.Router();
 
-router.get('/cards', getAllCards);
+cards.get('/', getAllCards);
 
 cards.post(
   '/',

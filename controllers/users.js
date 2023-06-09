@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
-const handleError = require('../utils/handleError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
 
@@ -31,12 +30,12 @@ async function createUser(req, res, next) {
   }
 }
 
-async function getAllUsers(req, res) {
+async function getAllUsers(req, res, next) {
   try {
     const users = await User.find({});
     res.send(users);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 
@@ -70,7 +69,7 @@ async function getCurrentUser(req, res, next) {
   }
 }
 
-async function updateUser(req, res) {
+async function updateUser(req, res, next){
   try {
     const userId = req.user._id;
     const { name, about } = req.body;
@@ -81,11 +80,11 @@ async function updateUser(req, res) {
     );
     res.send(user);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 
-async function updateAvatar(req, res) {
+async function updateAvatar(req, res, next) {
   try {
     const userId = req.user._id;
     const { avatar } = req.body;
@@ -96,7 +95,7 @@ async function updateAvatar(req, res) {
     );
     res.send(user);
   } catch (err) {
-    handleError(err, req, res);
+    next(err);
   }
 }
 

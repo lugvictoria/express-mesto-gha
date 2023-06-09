@@ -20,7 +20,6 @@ app.use(router);
 
 app.use(errors()); // обработчик ошибок celebrate
 
-app.use(handleError);
 
 app.listen(PORT, () => {
   console.log(`App started on port ${PORT}`);

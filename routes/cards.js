@@ -6,10 +6,10 @@ const {
 
 const cards = express.Router();
 
-cards.get('/', getAllCards);
+cards.get('/cards', getAllCards);
 
 cards.post(
-  '/',
+  '/cards',
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),
@@ -20,7 +20,7 @@ cards.post(
 );
 
 cards.delete(
-  '/:cardId',
+  '/cards/:cardId',
   celebrate({
     params: Joi.object().keys({
       cardId: Joi.string().alphanum().length(24),
@@ -30,7 +30,7 @@ cards.delete(
 );
 
 cards.put(
-  '/:cardId/likes',
+  '/cards/:cardId/likes',
   celebrate({
     params: Joi.object().keys({
       cardId: Joi.string().alphanum().length(24),
@@ -40,7 +40,7 @@ cards.put(
 );
 
 cards.delete(
-  '/:cardId/likes',
+  '/cards/:cardId/likes',
   celebrate({
     params: Joi.object().keys({
       cardId: Joi.string().alphanum().length(24),

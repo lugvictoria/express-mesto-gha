@@ -1,9 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { errors } = require('celebrate');
-
+const { errors }= require('celebrate');
 const helmet = require('helmet');
-
 const router = require('./routes/index');
 
 const { PORT = 3000 } = process.env;

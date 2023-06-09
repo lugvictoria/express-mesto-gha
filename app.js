@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 
 const helmet = require('helmet');
-const { handleError } = require('./middlewares/handleError');
 
 const router = require('./routes/index');
 

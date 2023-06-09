@@ -1,5 +1,5 @@
 const express = require('express');
-const NotFoundError = require('../errors/NotFoundError');
+const { NotFoundError } = require('../errors/NotFoundError');
 
 const router = express.Router();
 const userRouter = require('./users');
@@ -8,7 +8,7 @@ const cardRouter = require('./cards');
 router.use(userRouter);
 router.use(cardRouter);
 
-router.all('*', (req, res, next) => {
+router.use( (req, res, next) => {
   next(new NotFoundError('Неверный адрес запроса'));
 });
 

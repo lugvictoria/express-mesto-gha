@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Card = require('../models/card');
-const NotFoundError = require('../errors/NotFoundError');
-const ForbiddenError = require('../errors/ForbiddenError');
+const { NotFoundError } = require('../errors/NotFoundError');
+const { ForbiddenError } = require('../errors/ForbiddenError');
 
 async function getAllCards(req, res, next) {
   try {

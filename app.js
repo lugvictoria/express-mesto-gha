@@ -11,6 +11,7 @@ const app = express();
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  family: 4
 });
 app.use(helmet());
 app.use(express.json());

@@ -11,8 +11,6 @@ async function createUser(req, res, next) {
     const passwordHash = await bcrypt.hash(password, SALT_LENGTH);
     let user;
 
-console.log(req.body);
-
     try {
       user = await User.create({
         email,

@@ -9,9 +9,17 @@ async function createUser(req, res, next) {
   try {
     const { email, password, name, about, avatar } = req.body;
     const passwordHash = await bcrypt.hash(password, SALT_LENGTH);
-    let user = await User.findOne({email});
+    let user;
 
-    if (user) {
+    try {
+      user = await User.create({
+        email,
+        password: passwordHash,
+        name,
+        about,
+        avatar,
+      });
+    } catch (err) {
       throw new ConflictError('Пользователь с таким email уже существует');
     }
 
@@ -23,7 +31,7 @@ async function createUser(req, res, next) {
       avatar,
     });
     user = user.toObject();
-    delete user.password
+    delete user.password;
     res.status(201).send(user);
   } catch (err) {
     next(err);

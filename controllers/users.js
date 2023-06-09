@@ -11,6 +11,8 @@ async function createUser(req, res, next) {
     const passwordHash = await bcrypt.hash(password, SALT_LENGTH);
     let user;
 
+console.log(req.body);
+
     try {
       user = await User.create({
         email,
@@ -23,13 +25,6 @@ async function createUser(req, res, next) {
       throw new ConflictError('Пользователь с таким email уже существует');
     }
 
-    user = await User.create({
-      email,
-      password: passwordHash,
-      name,
-      about,
-      avatar,
-    });
     user = user.toObject();
     delete user.password;
     res.status(201).send(user);

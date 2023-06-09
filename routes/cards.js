@@ -1,15 +1,16 @@
 const express = require('express');
 const { celebrate, Joi } = require('celebrate');
+const { auth } = require('../middlewares/auth')
 const {
   getAllCards, createCard, deleteCard, putLike, deleteLike,
 } = require('../controllers/cards');
 
 const cards = express.Router();
 
-cards.get('/cards', getAllCards);
+cards.get('/cards', auth, getAllCards);
 
 cards.post(
-  '/cards',
+  '/cards', auth,
   celebrate({
     body: Joi.object().keys({
       name: Joi.string().required().min(2).max(30),
@@ -20,7 +21,7 @@ cards.post(
 );
 
 cards.delete(
-  '/cards/:cardId',
+  '/cards/:cardId', auth,
   celebrate({
     params: Joi.object().keys({
       cardId: Joi.string().alphanum().length(24),
@@ -30,7 +31,7 @@ cards.delete(
 );
 
 cards.put(
-  '/cards/:cardId/likes',
+  '/cards/:cardId/likes', auth,
   celebrate({
     params: Joi.object().keys({
       cardId: Joi.string().alphanum().length(24),
@@ -40,7 +41,7 @@ cards.put(
 );
 
 cards.delete(
-  '/cards/:cardId/likes',
+  '/cards/:cardId/likes', auth,
   celebrate({
     params: Joi.object().keys({
       cardId: Joi.string().alphanum().length(24),

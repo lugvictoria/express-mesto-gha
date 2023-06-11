@@ -40,7 +40,7 @@ async function deleteCard(req, res, next) {
     }
 
     await card.deleteOne()
-    res.send({message:'Карточка удалена'});
+    res.send(card);
   } catch (err) {
     next(err);
   }

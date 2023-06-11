@@ -39,7 +39,7 @@ async function deleteCard(req, res, next) {
       throw new ForbiddenError('Нельзя удалить чужую карточку');
     }
 
-    await card.deleteOne()
+    await Card.findByIdAndRemove(cardId); 
     res.send(card);
   } catch (err) {
     next(err);

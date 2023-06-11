@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Card = require('../models/card');
 const { NotFoundError } = require('../errors/NotFoundError');
 const { ForbiddenError } = require('../errors/ForbiddenError');
@@ -27,25 +26,21 @@ async function deleteCard(req, res, next) {
   try {
     const { cardId } = req.params;
 
-    let card = mongoose.Types.ObjectId.isValid(cardId);
+   const card = await Card.findById(cardId);
 
-    if (card) {
-      card = await Card.findById(cardId).populate('owner');
-    }
+    const ownerId = card.owner.id;
+    const userId = req.user._id;
 
     if (!card) {
       throw new NotFoundError('Карточка не найдена');
     }
 
-    const ownerId = card.owner.id;
-    const userId = req.user._id;
-
-    if (ownerId !== userId) {
+    if (ownerId.toString() !== userId) {
       throw new ForbiddenError('Нельзя удалить чужую карточку');
     }
 
-    await Card.findByIdAndRemove(cardId);
-    res.send(card);
+    await card.deleteOne()
+    res.send({message:'Карточка удалена'});
   } catch (err) {
     next(err);
   }

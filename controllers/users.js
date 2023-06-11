@@ -20,7 +20,12 @@ async function createUser(req, res, next) {
         avatar,
       });
     } catch (err) {
-      throw new ConflictError('Пользователь с таким email уже существует');
+      if (err.code === 11000) {
+      const conflict = new ConflictError('Пользователь с таким email уже существует');
+      next(conflict);
+      } else {
+        next(err);
+      }
     }
 
     user = user.toObject();

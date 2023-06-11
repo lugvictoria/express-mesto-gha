@@ -24,7 +24,7 @@ cards.delete(
   '/cards/:cardId', auth,
   celebrate({
     params: Joi.object().keys({
-      cardId: Joi.string().alphanum().length(24),
+      cardId: Joi.string().hex().length(24),
     }),
   }),
   deleteCard,
@@ -34,7 +34,7 @@ cards.put(
   '/cards/:cardId/likes', auth,
   celebrate({
     params: Joi.object().keys({
-      cardId: Joi.string().alphanum().length(24),
+      cardId: Joi.string().hex().length(24),
     }),
   }),
   putLike,
@@ -44,7 +44,7 @@ cards.delete(
   '/cards/:cardId/likes', auth,
   celebrate({
     params: Joi.object().keys({
-      cardId: Joi.string().alphanum().length(24),
+      cardId: Joi.string().hex().length(24),
     }),
   }),
   deleteLike,

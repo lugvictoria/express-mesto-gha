@@ -21,11 +21,11 @@ async function createUser(req, res, next) {
       });
     } catch (err) {
       if (err.code === 11000) {
-      const conflict = new ConflictError('Пользователь с таким email уже существует');
-      next(conflict);
-      } else {
-        next(err);
+        const conflict = new ConflictError('Пользователь с таким email уже существует');
+        next(conflict);
+        return
       }
+      next(err);
     }
 
     user = user.toObject();
@@ -75,7 +75,7 @@ async function getCurrentUser(req, res, next) {
   }
 }
 
-async function updateUser(req, res, next){
+async function updateUser(req, res, next) {
   try {
     const userId = req.user._id;
     const { name, about } = req.body;

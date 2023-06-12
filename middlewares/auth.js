@@ -20,8 +20,8 @@ function auth(req, res, next) {
       const errorAuth = new UnauthorizedError(
         'Для выполнения действия необходима авторизация',
       );
-     next(errorAuth);
-     return
+      next(errorAuth);
+      return
     }
 
     req.user = payload;

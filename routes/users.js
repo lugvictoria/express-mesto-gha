@@ -25,8 +25,8 @@ users.patch(
   '/users/me', auth,
   celebrate({
     body: Joi.object().required().keys({
-      name: Joi.string().min(2).max(30),
-      about: Joi.string().min(2).max(30),
+      name: Joi.string().required().min(2).max(30),
+      about: Joi.string().required().min(2).max(30),
     }),
   }),
   updateUser,
@@ -36,7 +36,7 @@ users.patch(
   '/users/me/avatar', auth,
   celebrate({
     body: Joi.object().required().keys({
-      avatar: Joi.string().regex(/https?:\/\/(www)?[0-9a-z\-._~:/?#[\]@!$&'()*+,;=]+#?$/i),
+      avatar: Joi.string().required().regex(/https?:\/\/(www)?[0-9a-z\-._~:/?#[\]@!$&'()*+,;=]+#?$/i),
     }),
   }),
   updateAvatar,

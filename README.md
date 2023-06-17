@@ -7,7 +7,7 @@
 * [Mesto](https://lugvictoria.github.io/mesto)
 * [Место (версия на React)](https://lugvictoria.github.io/mesto-react)
 * [Mesto (версия на авторизацией и регистрацией)](https://lugvictoria.github.io/react-mesto-auth)
-* Mesto (версия для сервера)    ⬅ этот репозиторий
+* Mesto (версия для сервера)    ⬅ этот репозиторий (https://lugvictoria.github.io/express-mesto-gha/)
 * Mesto (версия с фронтендом и бэкендом) 
 
 ## Директории
